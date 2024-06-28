@@ -1,0 +1,124 @@
+<div class="container mx-auto p-4">
+  <div class="bg-white shadow rounded-lg p-6">
+    <form>
+      <h1 class="text-xl font-semibold mb-4 text-gray-900">
+        Responsable de Retención
+      </h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <input
+          type="text"
+          placeholder="Nombre"
+          class="border p-2 rounded w-full"
+        />
+        <input
+          type="text"
+          placeholder="N° de Retención"
+          class="border p-2 rounded w-full"
+        />
+      </div>
+      <h1 class="text-xl font-semibold mb-4 text-gray-900">Datos Fiscales</h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <input
+          type="text"
+          placeholder="Nombre"
+          class="border p-2 rounded w-full"
+        />
+        <input
+          type="text"
+          placeholder="Rif"
+          class="border p-2 rounded w-full"
+        />
+      </div>
+      <div class="mb-4">
+        <input
+          type="text"
+          placeholder="Dirección Fiscal"
+          class="border p-2 rounded w-full"
+        />
+      </div>
+      <h1 class="text-xl font-semibold mb-4 text-gray-900">Datos de Factura</h1>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <input
+          type="text"
+          placeholder="N° de operación"
+          class="border p-2 rounded w-full"
+        />
+        <input type="date" class="border p-2 rounded w-full" />
+
+        <input
+          type="text"
+          placeholder="N° de Factura"
+          class="border p-2 rounded w-full"
+        />
+        <input
+          type="text"
+          placeholder="N° de operación"
+          class="border p-2 rounded w-full"
+        />
+      </div>
+      <h1 class="text-xl font-semibold mb-4 text-gray-900">Operaciones</h1>
+
+      <fieldset class="relative z-0 w-full p-px mb-5">
+        <legend
+          class="absolute text-gray-500 transform scale-75 -top-3 origin-0"
+        >
+          Selecciona una opción
+        </legend>
+        <div class="block pt-3 pb-2 space-x-4">
+          <label>
+            <input
+              type="radio"
+              name="radio"
+              value="1"
+              class="mr-2 text-black border-2 border-gray-300 focus:border-gray-300 focus:ring-black"
+            />
+            Retener I.V.A
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="radio"
+              value="2"
+              class="mr-2 text-black border-2 border-gray-300 focus:border-gray-300 focus:ring-black"
+            />
+            Retener I.S.L.R
+          </label>
+        </div>
+        <span class="text-sm text-red-600 hidden" id="error"
+          >Option has to be selected</span
+        >
+      </fieldset>
+
+      <div class="grid md:grid-cols-2 gap-4 mb-4">
+        <button
+          class="middle none center mr-4 rounded-lg bg-blue-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+        >
+          Calcular I.V.A
+        </button>
+      </div>
+
+      @if(calculateIVA){
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div>
+          <input
+            type="text"
+            placeholder="Base Imponible"
+            class="border p-2 rounded w-full"
+          />
+        </div>
+        <div class="">
+          <select class="border p-2 rounded w-">
+            <option>100%</option>
+            <option>75%</option>
+          </select>
+        </div>
+        <button
+          class="middle none center mr-4 rounded-lg bg-blue-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+        >
+          Calcular I.V.A
+        </button>
+      </div>
+      }
+    </form>
+  </div>
+</div>
