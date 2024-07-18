@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { FooterComponent } from '../components/footer/footer.component';
 import { FormComponent } from '../components/form/form.component';
-import { SummaryComponent } from '../components/summary/summary.component';
 
 @Component({
   selector: 'app-layout',
@@ -15,7 +14,6 @@ import { SummaryComponent } from '../components/summary/summary.component';
     NavbarComponent,
     FooterComponent,
     FormComponent,
-    SummaryComponent
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',

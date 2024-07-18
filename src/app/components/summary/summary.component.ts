@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-summary',
@@ -11,4 +11,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './summary.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SummaryComponent { }
+export class SummaryComponent {
+
+  @Input() totalIVA: number = 0;
+
+
+}
