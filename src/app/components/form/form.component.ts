@@ -51,7 +51,8 @@ export class FormComponent implements OnInit {
       ],
       numeroRetencion: [
         "",
-        Validators.required,
+        [Validators.required,
+        Validators.pattern(/^\d{1,5}$/)]
       ],
       periodoFiscal: ["", Validators.required],
       nombreFiscal: ["", Validators.required],
@@ -93,7 +94,6 @@ export class FormComponent implements OnInit {
 
         if( retencion === "2"){
           this.totalIVA = this.taxCalculationService.calculateISLR(baseImponible, porcentaje)
-          console.log(this.totalIVA);
         }
 
 
