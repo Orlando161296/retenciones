@@ -2,14 +2,14 @@
   <h2 class="text-xl font-semibold text-gray-900">Resumen de Totales</h2>
   <div class="flex justify-between">
     <span class="text-gray-700">Total de Factura</span>
-    <span class="text-gray-900 font-bold"> {{ totalIVA }}</span>
+    <span class="text-gray-900 font-bold">{{ totalInvoiced | number:'1.2-2'}} Bs</span>
   </div>
   <div class="flex justify-between">
     <span class="text-gray-700">Total Impuesto Retenido</span>
-    <span class="text-gray-900 font-bold"> 0.00 Bs</span>
+    <span class="text-gray-900 font-bold"> {{ totalIVA | number:'1.2-2'}} Bs</span>
   </div>
   <div class="flex justify-between">
     <span class="text-gray-700">Total a Pagar</span>
-    <span class="text-gray-900 font-bold"> 925,00 Bs</span>
+    <span class="text-gray-900 font-bold"> {{ totalPayd | number:'1.2-2'}} Bs</span>
   </div>
 </div>

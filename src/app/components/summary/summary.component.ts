@@ -14,6 +14,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 export class SummaryComponent {
 
   @Input() totalIVA: number = 0;
+  @Input() totalInvoiced: number = 0;
+  @Input() totalPayd: number = 0;
 
 
 }

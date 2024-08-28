@@ -1,139 +1,370 @@
 <div class="container mx-auto p-4">
-  <div class="bg-white shadow rounded-lg p-6">
+  <div class="bg-white shadow-lg rounded-lg p-6 max-w-4xl mx-auto">
     <form [formGroup]="retentionForm" (ngSubmit)="onSubmit()">
-      <h1 class="text-xl font-semibold mb-4 text-gray-900">
+      <h1 class="text-2xl font-semibold mb-6 text-gray-900">
         Responsable de Retención
       </h1>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <input
-          type="text"
-          formControlName="nombreResponsable"
-          placeholder="Nombre"
-          class="border p-2 rounded w-full"
-        />
-        <input
-          type="text"
-          formControlName="numeroRetencion"
-          placeholder="N° de Retención"
-          class="border p-2 rounded w-full"
-        />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div class="relative">
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Nombre
+          </label>
+          <input
+            type="text"
+            formControlName="nombreResponsable"
+            placeholder="Escribe el nombre"
+            class="border border-gray-300 p-2 rounded w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+          <span
+            *ngIf="
+              retentionForm.get('nombreResponsable')?.invalid &&
+              retentionForm.get('nombreResponsable')?.touched
+            "
+            class="text-sm text-red-600"
+          >
+            El nombre es requerido.
+          </span>
+        </div>
+        <div class="relative">
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            N° de Retención
+          </label>
+          <input
+            type="text"
+            formControlName="numeroRetencion"
+            placeholder="Escribe el número de retención"
+            class="border border-gray-300 p-2 rounded w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+          <span
+            *ngIf="
+              retentionForm.get('numeroRetencion')?.invalid &&
+              retentionForm.get('numeroRetencion')?.touched
+            "
+            class="text-sm text-red-600"
+          >
+            El número de retención es requerido.
+          </span>
+        </div>
+        <div class="relative">
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Periodo Fiscal
+          </label>
+          <select
+            id="select-example"
+            formControlName="periodoFiscal"
+            class="w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 max-w-xs"
+          >
+            <option value="" disabled selected>Selecciona un Periodo</option>
+            <option
+              *ngFor="let periodo of periodoFiscal"
+              [value]="periodo.value"
+            >
+              {{ periodo.value }}
+            </option>
+          </select>
+          <span
+            *ngIf="
+              retentionForm.get('periodoFiscal')?.invalid &&
+              retentionForm.get('periodoFiscal')?.touched
+            "
+            class="text-sm text-red-600"
+          >
+            El periodo fiscal es requerido.
+          </span>
+        </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <select
-          id="select-example"
-          formControlName="periodoFiscal"
-          class="w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-        >
-          <option value="" disabled selected>Periodo Fiscal</option>
-          <option *ngFor="let periodo of periodoFiscal" [value]="periodo.value">{{ periodo.value }}</option>
-        </select>
+      <h1 class="text-2xl font-semibold mb-6 text-gray-900">Datos Fiscales</h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div class="relative">
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Nombre Fiscal
+          </label>
+          <input
+            type="text"
+            formControlName="nombreFiscal"
+            placeholder="Escribe el nombre fiscal"
+            class="border border-gray-300 p-2 rounded w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+          <span
+            *ngIf="
+              retentionForm.get('nombreFiscal')?.invalid &&
+              retentionForm.get('nombreFiscal')?.touched
+            "
+            class="text-sm text-red-600"
+          >
+            El nombre fiscal es requerido.
+          </span>
+        </div>
+        <div class="relative">
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            RIF
+          </label>
+          <input
+            type="text"
+            formControlName="rif"
+            placeholder="Escribe el RIF"
+            class="border border-gray-300 p-2 rounded w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+          <span
+            *ngIf="
+              retentionForm.get('rif')?.invalid &&
+              retentionForm.get('rif')?.touched
+            "
+            class="text-sm text-red-600"
+          >
+            El RIF es requerido y debe seguir el formato correcto V-000000 ó
+            j-0000000
+          </span>
+        </div>
+        <div class="relative md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Dirección Fiscal
+          </label>
+          <input
+            type="text"
+            formControlName="direccionFiscal"
+            placeholder="Escribe la dirección fiscal"
+            class="border border-gray-300 p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+          <span
+            *ngIf="
+              retentionForm.get('direccionFiscal')?.invalid &&
+              retentionForm.get('direccionFiscal')?.touched
+            "
+            class="text-sm text-red-600"
+          >
+            La dirección fiscal es requerida.
+          </span>
+        </div>
       </div>
 
-      <h1 class="text-xl font-semibold mb-4 text-gray-900">Datos Fiscales</h1>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <input
-          type="text"
-          formControlName="nombreFiscal"
-          placeholder="Nombre"
-          class="border p-2 rounded w-full"
-        />
-        <input
-          type="text"
-          formControlName="rif"
-          placeholder="Rif"
-          class="border p-2 rounded w-full"
-        />
-      </div>
-      <div class="mb-4">
-        <input
-          type="text"
-          formControlName="direccionFiscal"
-          placeholder="Dirección Fiscal"
-          class="border p-2 rounded w-full"
-        />
-      </div>
-      <h1 class="text-xl font-semibold mb-4 text-gray-900">Datos de Factura</h1>
+      <h1 class="text-2xl font-semibold mb-6 text-gray-900">
+        Datos de Factura
+      </h1>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <input
-          type="text"
-          formControlName="numeroOperacion"
-          placeholder="N° de operación"
-          class="border p-2 rounded w-full"
-        />
-        <input type="date" formControlName="fechaOperacion" class="border p-2 rounded w-full" />
-
-        <input
-          type="text"
-          formControlName="numeroFactura"
-          placeholder="N° de Factura"
-          class="border p-2 rounded w-full"
-        />
+        <div class="relative">
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            N° de Factura
+          </label>
+          <input
+            type="text"
+            formControlName="numeroFactura"
+            placeholder="Escribe el número de factura"
+            class="border border-gray-300 p-2 rounded w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+          <span
+            *ngIf="
+              retentionForm.get('numeroFactura')?.invalid &&
+              retentionForm.get('numeroFactura')?.touched
+            "
+            class="text-sm text-red-600"
+          >
+            El número de factura es requerido y debe ser un valor positivo.
+          </span>
+        </div>
+        <div class="relative">
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            N° de Control
+          </label>
+          <input
+            type="text"
+            formControlName="numeroControl"
+            placeholder="Escribe el número de operación"
+            class="border border-gray-300 p-2 rounded w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+          <span
+            *ngIf="
+              retentionForm.get('numeroControl')?.invalid &&
+              retentionForm.get('numeroControl')?.touched
+            "
+            class="text-sm text-red-600"
+          >
+            El número de control es requerido.
+          </span>
+        </div>
+        <div class="relative">
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Fecha de Factura
+          </label>
+          <input
+            type="date"
+            formControlName="fechaOperacion"
+            class="border border-gray-300 p-2 rounded w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-blue-600"
+          />
+          <span
+            *ngIf="
+              retentionForm.get('fechaOperacion')?.invalid &&
+              retentionForm.get('fechaOperacion')?.touched
+            "
+            class="text-sm text-red-600"
+          >
+            La fecha de la factura es obligatoria
+          </span>
+        </div>
       </div>
-      <h1 class="text-xl font-semibold mb-4 text-gray-900">Operaciones</h1>
+
+      <h1 class="text-2xl font-semibold mb-6 text-gray-900">Operaciones</h1>
 
       <fieldset class="relative z-0 w-full p-px mb-5">
-        <legend class="absolute text-gray-500 transform scale-75 -top-3 origin-0">Selecciona una opción</legend>
+        <legend
+          class="absolute text-gray-500 transform scale-75 -top-3 origin-0"
+        >
+          Selecciona una opción
+        </legend>
         <div class="block pt-3 pb-2 space-x-4">
           <label>
-            <input type="radio" formControlName="retencion" value="1" class="mr-2 text-black border-2 border-gray-300 focus:border-gray-300 focus:ring-black" (change)="changeTax($event)" />
+            <input
+              type="radio"
+              formControlName="retencion"
+              value="1"
+              class="mr-2 text-black border-2 border-gray-300 focus:border-gray-300 focus:ring-black"
+            />
             Retener I.V.A
           </label>
           <label>
-            <input type="radio" formControlName="retencion" value="2" class="mr-2 text-black border-2 border-gray-300 focus:border-gray-300 focus:ring-black" (change)="changeTax($event)" />
+            <input
+              type="radio"
+              formControlName="retencion"
+              value="2"
+              class="mr-2 text-black border-2 border-gray-300 focus:border-gray-300 focus:ring-black"
+            />
             Retener I.S.L.R
           </label>
         </div>
-        <span class="text-sm text-red-600 hidden" id="error">Option has to be selected</span>
+        <span
+          *ngIf="
+            retentionForm.get('retencion')?.invalid &&
+            retentionForm.get('retencion')?.touched
+          "
+          class="text-sm text-red-600"
+        >
+          Debes seleccionar una opción.
+        </span>
       </fieldset>
 
-      <div *ngIf="retentionForm.get('retencion')!.value === '1'" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div>
+      <div
+        *ngIf="retentionForm.get('retencion')!.value === '1'"
+        class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6"
+      >
+        <div class="relative">
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Base Imponible
+          </label>
           <input
             type="number"
             formControlName="baseImponible"
-            placeholder="Base Imponible"
-            class="border p-2 rounded w-full"
+            placeholder="Escribe la base imponible"
+            class="border border-gray-300 p-2 rounded w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
+          <span
+            *ngIf="
+              retentionForm.get('baseImponible')?.invalid &&
+              retentionForm.get('baseImponible')?.touched
+            "
+            class="text-sm text-red-600"
+          >
+            La base imponible es requerida y debe ser un valor positivo.
+          </span>
         </div>
-        <div class="">
-          <select formControlName="porcentaje" class="border p-2 rounded w-">
-            <option value= 1 >100%</option>
-            <option value= 0.75>75%</option>
+        <div class="relative">
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Porcentaje
+          </label>
+          <select
+            formControlName="porcentaje"
+            class="border border-gray-300 p-2 rounded w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-blue-600"
+          >
+            <option value="1">100%</option>
+            <option value="0.75">75%</option>
           </select>
+          <span
+            *ngIf="
+              retentionForm.get('porcentaje')?.invalid &&
+              retentionForm.get('porcentaje')?.touched
+            "
+            class="text-sm text-red-600"
+          >
+            El porcentaje es requerido.
+          </span>
         </div>
         <button
-          class="middle none center mr-4 rounded-lg bg-blue-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          class="middle none center rounded-lg bg-blue-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
         >
           Calcular I.V.A
         </button>
       </div>
 
-      <div *ngIf="retentionForm.get('retencion')!.value === '2'" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div>
+      <div
+        *ngIf="retentionForm.get('retencion')!.value === '2'"
+        class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"
+      >
+        <div class="relative">
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Base Imponible
+          </label>
           <input
-            type="text"
+            type="number"
             formControlName="baseImponible"
-            placeholder="Base Imponible"
-            class="border p-2 rounded w-full"
+            placeholder="Escribe la base imponible"
+            class="border border-gray-300 p-2 rounded w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
+          <span
+            *ngIf="
+              retentionForm.get('baseImponible')?.invalid &&
+              retentionForm.get('baseImponible')?.touched
+            "
+            class="text-sm text-red-600"
+          >
+            La base imponible es requerida.
+          </span>
         </div>
-        <div class="">
-          <select formControlName="porcentaje" class="border p-2 rounded w-">
-            <option value= 0.2 >2%</option>
-            <option value= 0.1 >1%</option>
+        <div class="relative">
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Porcentaje
+          </label>
+          <select
+            formControlName="porcentaje"
+            class="border border-gray-300 p-2 rounded w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-blue-600"
+          >
+            <option value="2">2%</option>
+            <option value="1">1%</option>
           </select>
+          <span
+            *ngIf="
+              retentionForm.get('porcentaje')?.invalid &&
+              retentionForm.get('porcentaje')?.touched
+            "
+            class="text-sm text-red-600"
+          >
+            El porcentaje es requerido.
+          </span>
         </div>
         <button
-          class="middle none center mr-4 rounded-lg bg-blue-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-        >
-          Calcular I.S.L.R
-        </button>
+        class="middle none center rounded-lg bg-blue-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+      >
+        Calcular I.V.A
+      </button>
       </div>
     </form>
+
+    @if (showSummary) {
+    <div class="flex flex-col md:flex-row items-center justify-center mt-5">
+      <app-summary
+        [totalIVA]="totalIVA"
+        [totalInvoiced]="totalInvoiced"
+        [totalPayd]="totalPayd"
+        class="w-full md:w-1/2"
+      ></app-summary>
+
+      <button
+        type="button"
+        class="w-full md:w-auto mt-4 md:mt-0 rounded-lg bg-green-500 py-3 px-6 text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-85 focus:shadow-none active:opacity-85 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+        (click)="printRetention()"
+      >
+        Imprimir Retención
+      </button>
+    </div>
+    }
   </div>
 </div>
-
-@if (calculateIVA) {
-  <app-summary [totalIVA]="totalIVA"></app-summary>
-}
