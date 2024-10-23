@@ -1,52 +1,39 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaxService {
-  private readonly IVA_RATE: number = 0.16;
-
   /**
-   * Calcula el IVA sobre una base imponible.
+   * Calcula el IVA sobre una base imponible en base a una tasa de IVA variable.
    * @param baseImponible Monto sobre el que se calcula el IVA.
+   * @param ivaRate Tasa de IVA (por ejemplo, 0.16 para el 16%).
    * @returns El monto de IVA calculado.
    */
-  calculateIVA(baseImponible: number ): number {
-    return baseImponible * this.IVA_RATE;
-  }
-
-  calculateISLR(baseImponible: number, percentaje: number){
-    return baseImponible * (percentaje/100)
-  }
-
-  /**
-   *
-   * @param baseImponible
-   * @param percentaje
-   * @returns
-   */
-  calculatePercentage( baseImponible: number, percentaje: number ){
-   return baseImponible * (percentaje/100);
+  calculateIVA(baseImponible: number, ivaRate: number): number {
+    return baseImponible * ivaRate;
   }
 
   /**
    * Calcula la retención de impuestos sobre una base imponible.
    * @param baseImponible Monto sobre el que se calcula la retención.
    * @param withholdingRate Porcentaje de retención aplicado.
+   * @param ivaRate Tasa de IVA (por ejemplo, 0.16 para el 16%).
    * @returns El monto de retención calculado.
    */
-  calculateWithheldTax(baseImponible: number, withholdingRate: number): number {
-    const ivaAmount = this.calculateIVA(baseImponible);
-    return ivaAmount * withholdingRate;
+  calculateWithheldTax(baseImponible: number, withholdingRate: number, ivaRate: number): number {
+    const ivaAmount = this.calculateIVA(baseImponible, ivaRate);
+    return ivaAmount * (withholdingRate);
   }
 
   /**
    * Calcula el total de una factura sumando el IVA a la base imponible.
    * @param baseImponible Monto base de la factura.
+   * @param ivaRate Tasa de IVA.
    * @returns El total de la factura con IVA incluido.
    */
-  calculateInvoiceTotal(baseImponible: number): number {
-    const ivaAmount = this.calculateIVA(baseImponible);
+  calculateInvoiceTotal(baseImponible: number, ivaRate: number): number {
+    const ivaAmount = this.calculateIVA(baseImponible, ivaRate);
     return baseImponible + ivaAmount;
   }
 
@@ -54,18 +41,25 @@ export class TaxService {
    * Calcula el total a pagar después de aplicar la retención de impuestos.
    * @param baseImponible Monto base de la factura.
    * @param withholdingRate Porcentaje de retención aplicado.
+   * @param ivaRate Tasa de IVA.
    * @returns El total a pagar después de retenciones.
    */
-  calculateTotalPayable(
-    baseImponible: number,
-    withholdingRate: number
-  ): number {
-    const invoiceTotal = this.calculateInvoiceTotal(baseImponible);
-    const withheldTax = this.calculateWithheldTax(
-      baseImponible,
-      withholdingRate
-    );
-    const totalPayable = invoiceTotal - withheldTax;
-    return totalPayable;
+  calculateTotalPayable(baseImponible: number, withholdingRate: number, ivaRate: number): number {
+    const invoiceTotal = this.calculateInvoiceTotal(baseImponible, ivaRate);
+    const withheldTax = this.calculateWithheldTax(baseImponible, withholdingRate, ivaRate);
+    return invoiceTotal - withheldTax;
   }
+
+  /**
+   * Calcula el impuesto retenido para ISLR.
+   * @param baseImponible - La base imponible sobre la que se calcula el impuesto.
+   * @param islrPercentage - El porcentaje de ISLR a aplicar (0.01 o 0.02).
+   * @returns El monto de ISLR retenido.
+   */
+  calculateISLR(baseImponible: number, islrPercentage: number): number {
+    return baseImponible * islrPercentage;
+  }
+
+
+
 }
