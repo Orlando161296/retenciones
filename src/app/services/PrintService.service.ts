@@ -13,188 +13,305 @@ export class PrintService {
   public logo =
     'data:image/png;base64,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';
 
-    /**
-     * Genera un PDF con el comprobante de retención del impuesto al valor agregado (I.V.A).
-     *
-     * @param formValues - Un objeto que contiene los datos necesarios para generar el PDF, incluyendo:
-     *   - value: Objeto que incluye información de retención, sujeto retenido y detalles de facturas.
-     *   - nombreFiscal: Nombre o razón social del sujeto retenido.
-     *   - rif: Registro de Información Fiscal del sujeto retenido.
-     *   - direccionFiscal: Dirección fiscal del sujeto retenido.
-     *   - facturas: Array de objetos que representan las facturas asociadas.
-     */
-    createPdf(formValues: any) {
+  /**
+   * Genera un PDF con el comprobante de retención del impuesto al valor agregado (I.V.A).
+   *
+   * @param formValues - Un objeto que contiene los datos necesarios para generar el PDF, incluyendo:
+   *   - value: Objeto que incluye información de retención, sujeto retenido y detalles de facturas.
+   *   - nombreFiscal: Nombre o razón social del sujeto retenido.
+   *   - rif: Registro de Información Fiscal del sujeto retenido.
+   *   - direccionFiscal: Dirección fiscal del sujeto retenido.
+   *   - facturas: Array de objetos que representan las facturas asociadas.
+   */
+  createPdf(formValues: any, totalPay: any) {
 
-      // Inicialización del documento PDF en orientación horizontal (landscape), en milímetros, tamaño A4
-      const doc = new jsPDF('l', 'mm', 'a4');
+    // Inicialización del documento PDF en orientación horizontal (landscape), en milímetros, tamaño A4
+    const doc = new jsPDF('l', 'mm', 'a4');
 
-      const pageWidth = doc.internal.pageSize.getWidth(); // Obtiene el ancho de la página
-      const pageMargin = 5; // Margen en mm para todo el documento
-      let yPosition = 0; // Posición Y inicial
+    const pageWidth = doc.internal.pageSize.getWidth(); // Obtiene el ancho de la página
+    const pageMargin = 5; // Margen en mm para todo el documento
+    let yPosition = 0; // Posición Y inicial
 
-      // Fecha actual formateada (dd/mm/yyyy)
-      const today = new Date();
-      const day = String(today.getDate()).padStart(2, '0');
-      const month = String(today.getMonth() + 1).padStart(2, '0');
-      const year = today.getFullYear();
-      const formattedDate = `${day}/${month}/${year}`;
+    // Fecha actual formateada (dd/mm/yyyy)
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = today.getFullYear();
+    const formattedDate = `${day}/${month}/${year}`;
 
-      // Generar el número de comprobante basado en el año, mes y número de secuencia
-      const sequenceNumber = String(formValues.value.numeroRetencion);
-      const formattedComprobanteNumber = `${year}${month}000${sequenceNumber}`;
+    // Generar el número de comprobante basado en el año, mes y número de secuencia
+    const sequenceNumber = String(formValues.value.numeroRetencion);
+    const formattedComprobanteNumber = `${year}${month}000${sequenceNumber}`;
 
-      // Añadir el logo de la empresa en la esquina superior izquierda
-      const imageBase64 = this.logo;
-      const imgWidth = 60; // Ancho de la imagen
-      const imgHeight = 20; // Alto de la imagen
-      const imgXPosition = pageMargin;
-      const imgYPosition = pageMargin;
-      doc.addImage(imageBase64, 'PNG', imgXPosition, imgYPosition, imgWidth, imgHeight);
+    // Añadir el logo de la empresa en la esquina superior izquierda
+    const imageBase64 = this.logo;
+    const imgWidth = 60; // Ancho de la imagen
+    const imgHeight = 20; // Alto de la imagen
+    const imgXPosition = pageMargin;
+    const imgYPosition = pageMargin;
+    doc.addImage(
+      imageBase64,
+      'PNG',
+      imgXPosition,
+      imgYPosition,
+      imgWidth,
+      imgHeight
+    );
 
-      // Ajustar la posición Y después de agregar la imagen
-      yPosition = imgYPosition + imgHeight + 10;
+    // Ajustar la posición Y después de agregar la imagen
+    yPosition = imgYPosition + imgHeight + 10;
 
-      // Función para centrar texto en el documento
-      const centerText = (text: string, y: number) => {
-          const textWidth = doc.getTextWidth(text);
-          const xPosition = (pageWidth - textWidth) / 2;
-          doc.text(text, xPosition, y);
-      };
+    // Función para centrar texto en el documento
+    const centerText = (text: string, y: number) => {
+      const textWidth = doc.getTextWidth(text);
+      const xPosition = (pageWidth - textWidth) / 2;
+      doc.text(text, xPosition, y);
+    };
 
-      // Título de la empresa centrado
-      doc.setFontSize(15);
-      doc.setTextColor(0, 0, 0);
-      centerText('ORGANISMO DE INTEGRACIÓN COOPERATIVA CECOSESOLA', yPosition);
-      yPosition += 8; // Ajuste de posición Y
+    // Título de la empresa centrado
+    doc.setFontSize(15);
+    doc.setTextColor(0, 0, 0);
+    centerText('ORGANISMO DE INTEGRACIÓN COOPERATIVA CECOSESOLA', yPosition);
+    yPosition += 8; // Ajuste de posición Y
 
-      // Párrafo con el texto legal centrado y con ajuste de ancho
-      doc.setFontSize(10);
-      const pruebaTexto = '((Ley I.V.A.) "Serán responsables del pago del impuesto en calidad de agentes de retención, los compradores o adquirientes de determinados bienes muebles y los receptores de ciertos servicios, a quienes la administración tributaria designe como tal';
-      const paragraphLines = doc.splitTextToSize(pruebaTexto, pageWidth - 2 * pageMargin);
-      paragraphLines.forEach((line: string, index: number) => {
-          const lineWidth = doc.getTextWidth(line);
-          const xPosition = (pageWidth - lineWidth) / 2;
-          doc.text(line, xPosition, yPosition + index * 5);
-      });
-      yPosition += paragraphLines.length * 5 + 8;
+    // Párrafo con el texto legal centrado y con ajuste de ancho
+    doc.setFontSize(10);
+    const pruebaTexto =
+      '((Ley I.V.A.) "Serán responsables del pago del impuesto en calidad de agentes de retención, los compradores o adquirientes de determinados bienes muebles y los receptores de ciertos servicios, a quienes la administración tributaria designe como tal';
+    const paragraphLines = doc.splitTextToSize(
+      pruebaTexto,
+      pageWidth - 2 * pageMargin
+    );
+    paragraphLines.forEach((line: string, index: number) => {
+      const lineWidth = doc.getTextWidth(line);
+      const xPosition = (pageWidth - lineWidth) / 2;
+      doc.text(line, xPosition, yPosition + index * 5);
+    });
+    yPosition += paragraphLines.length * 5 + 8;
 
-      // Título del comprobante de retención centrado
-      doc.setFontSize(12);
-      centerText('COMPROBANTE DE RETENCIÓN DEL IMPUESTO AL VALOR AGREGADO I.V.A', yPosition);
-      yPosition += 8;
+    // Título del comprobante de retención centrado
+    doc.setFontSize(12);
+    centerText(
+      'COMPROBANTE DE RETENCIÓN DEL IMPUESTO AL VALOR AGREGADO I.V.A',
+      yPosition
+    );
+    yPosition += 8;
 
-      // Sección de "N° de comprobante", "Fecha" y "Periodo Fiscal"
-      const sectionData = [
-          { label: 'N° de Comprobante:', value: formattedComprobanteNumber },
-          { label: 'Fecha:', value: formattedDate },
-          { label: 'Periodo Fiscal:', value: formValues.value.periodoFiscal },
-      ];
+    // Sección de "N° de comprobante", "Fecha" y "Periodo Fiscal"
+    const sectionData = [
+      { label: 'N° de Comprobante:', value: formattedComprobanteNumber },
+      { label: 'Fecha:', value: formattedDate },
+      { label: 'Periodo Fiscal:', value: formValues.value.periodoFiscal },
+    ];
 
-      const sectionSpacing = (pageWidth - 3 * 60) / 4;
-      let sectionXPosition = sectionSpacing;
+    const sectionSpacing = (pageWidth - 3 * 60) / 4;
+    let sectionXPosition = sectionSpacing;
 
-      sectionData.forEach((section) => {
-          doc.text(`${section.label} ${section.value}`, sectionXPosition, yPosition);
-          sectionXPosition += 60 + sectionSpacing;
-      });
+    sectionData.forEach((section) => {
+      doc.text(
+        `${section.label} ${section.value}`,
+        sectionXPosition,
+        yPosition
+      );
+      sectionXPosition += 60 + sectionSpacing;
+    });
 
-      yPosition += 5;
+    yPosition += 5;
 
-      // Información del agente de retención y del sujeto retenido
-      const companyData = [
-          ['NOMBRE O RAZÓN SOCIAL DEL AGENTE DE RETENCIÓN:', 'ORGANISMO DE INTEGRACIÓN COOPERATIVA CECOSESOLA'],
-          ['REGISTRO DE INFORMACIÓN FISCAL DEL AGENTE DE RETENCIÓN:', 'J-085030140'],
-          ['DIRECCIÓN FISCAL DEL AGENTE DE RETENCIÓN:', 'FINAL AV LOS HORCONES...'],
-          ['NOMBRE O RAZÓN SOCIAL DEL SUJETO RETENIDO:', formValues.value.nombreFiscal],
-          ['INFORMACIÓN FISCAL DEL SUJETO RETENIDO (RIF):', formValues.value.rif],
-          ['DIRECCIÓN FISCAL DEL SUJETO RETENIDO:', formValues.value.direccionFiscal],
-      ];
+    // Información del agente de retención y del sujeto retenido
+    const companyData = [
+      [
+        'NOMBRE O RAZÓN SOCIAL DEL AGENTE DE RETENCIÓN:',
+        'ORGANISMO DE INTEGRACIÓN COOPERATIVA CECOSESOLA',
+      ],
+      [
+        'REGISTRO DE INFORMACIÓN FISCAL DEL AGENTE DE RETENCIÓN:',
+        'J-085030140',
+      ],
+      ['DIRECCIÓN FISCAL DEL AGENTE DE RETENCIÓN:', 'FINAL AV LOS HORCONES...'],
+      [
+        'NOMBRE O RAZÓN SOCIAL DEL SUJETO RETENIDO:',
+        formValues.value.nombreFiscal,
+      ],
+      ['INFORMACIÓN FISCAL DEL SUJETO RETENIDO (RIF):', formValues.value.rif],
+      [
+        'DIRECCIÓN FISCAL DEL SUJETO RETENIDO:',
+        formValues.value.direccionFiscal,
+      ],
+    ];
 
-      // Crear tabla con autoTable para mostrar la información de la empresa
-      (doc as any).autoTable({
-          startY: yPosition,
-          head: [['', '']],
-          body: companyData,
-          margin: { left: pageMargin, right: pageMargin },
-          styles: { fontSize: 8, cellPadding: 2, overflow: 'linebreak', lineWidth: 0.3, lineColor: [0, 0, 0] },
-          headStyles: { fillColor: [200, 200, 200], textColor: [0, 0, 0], lineWidth: 0.5, lineColor: [0, 0, 0] },
-          didDrawPage: (data: any) => { yPosition = data.cursor.y; }
-      });
+    // Crear tabla con autoTable para mostrar la información de la empresa
+    (doc as any).autoTable({
+      startY: yPosition,
+      head: [['', '']],
+      body: companyData,
+      margin: { left: pageMargin, right: pageMargin },
+      styles: {
+        fontSize: 8,
+        cellPadding: 2,
+        overflow: 'linebreak',
+        lineWidth: 0.3,
+        lineColor: [0, 0, 0],
+      },
+      headStyles: {
+        fillColor: [200, 200, 200],
+        textColor: [0, 0, 0],
+        lineWidth: 0.5,
+        lineColor: [0, 0, 0],
+      },
+      didDrawPage: (data: any) => {
+        yPosition = data.cursor.y;
+      },
+    });
 
-      yPosition += 5;
+    yPosition += 5;
 
-      // Tabla de facturas, ahora soportando múltiples facturas
-      const invoiceData = [
-          ['N°', 'Fecha de Factura', 'N° de Factura', 'N° Control', 'Total Incluyendo I.V.A', 'Base Imponible', '%', 'Impuesto I.V.A', 'I.V.A Retenido', 'Monto a Pagar'],
-      ];
+    // Tabla de facturas, ahora soportando múltiples facturas
+    const invoiceData = [
+      [
+        'N°',
+        'Fecha de Factura',
+        'N° de Factura',
+        'N° Control',
+        'Total Incluyendo I.V.A',
+        'Base Imponible',
+        '%',
+        'Impuesto I.V.A',
+        'I.V.A Retenido',
+        'Monto a Pagar',
+      ],
+    ];
 
-      // Itera sobre todas las facturas en los valores del formulario
-      const invoiceDetails = formValues.value.facturas.map((factura: any, index: number) => [
+    // Itera sobre todas las facturas en los valores del formulario
+    const invoiceDetails = formValues.value.facturas.map(
+      (factura: any, index: number) => [
         (index + 1).toString(),
         factura.fechaFactura,
         factura.numeroFactura,
         factura.numeroControl,
         Number(factura.calculos?.totalInvoice || 0).toFixed(2), // Total incluyendo IVA
         Number(factura.baseImponible).toFixed(2), // Base imponible
-        (factura.porcentaje * 100), // Porcentaje
+        factura.porcentaje * 100, // Porcentaje
         Number(factura.calculos?.iva || 0).toFixed(2), // IVA
         Number(factura.calculos?.withheldTax || 0).toFixed(2), // IVA retenido
         Number(factura.calculos?.totalPayable || 0).toFixed(2), // Monto a pagar
-    ]);
+      ]
+    );
 
-      // Crear tabla con los detalles de las facturas
-      (doc as any).autoTable({
-          startY: yPosition,
-          head: invoiceData,
-          body: invoiceDetails,
-          margin: { left: pageMargin, right: pageMargin },
-          styles: { fontSize: 10, cellPadding: 2, halign: 'center', lineWidth: 0.3, lineColor: [0, 0, 0], textColor: [0, 0, 0] },
-          headStyles: { fillColor: [200, 200, 200], textColor: [0, 0, 0], lineWidth: 0.3, lineColor: [0, 0, 0] },
-          didDrawPage: (data: any) => { yPosition = data.cursor.y; }
-      });
+    // Calcula el monto total a pagar
+    const totalPayable = formValues.value.facturas.reduce(
+      (acc: number, factura: any) =>
+        acc + (factura.calculos?.totalPayable || 0),
+      0
+    );
 
-      yPosition += 20;
+    // Crear tabla con los detalles de las facturas
+    (doc as any).autoTable({
+      startY: yPosition,
+      head: invoiceData,
+      body: invoiceDetails,
+      margin: { left: pageMargin, right: pageMargin },
+      styles: {
+        fontSize: 10,
+        cellPadding: 2,
+        halign: 'center',
+        lineWidth: 0.3,
+        lineColor: [0, 0, 0],
+        textColor: [0, 0, 0],
+      },
+      headStyles: {
+        fillColor: [200, 200, 200],
+        textColor: [0, 0, 0],
+        lineWidth: 0.3,
+        lineColor: [0, 0, 0],
+      },
+      didDrawPage: (data: any) => {
+        yPosition = data.cursor.y;
+      },
+    });
 
-      // Sección de firmas y sello digital
-      const signatureLineWidth = 50;
-      const signatureSpacing = (pageWidth - signatureLineWidth * 3) / 4;
-      const positionsX = [
-          signatureSpacing,
-          signatureSpacing * 2 + signatureLineWidth,
-          signatureSpacing * 3 + signatureLineWidth * 2,
-      ];
+    yPosition += 5;
 
-      const ySignaturesPosition = 170;
-      const yLinePosition = ySignaturesPosition + 20;
-      const yTextPosition = yLinePosition + 5;
+    // Mostrar el monto total a pagar debajo de la tabla, alineado a la derecha
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold'); // Texto en negrita
 
-      doc.setFontSize(10);
+    // Calcula la posición X para alinear el texto a la derecha
+    const rightAlignedX = doc.internal.pageSize.width - pageMargin; // Ancho de la página menos el margen
 
-      // Sello digital
-      const selloImageBase64 = this.imgSelloBase64;
-      const selloWidth = 20;
-      const selloHeight = 20;
-      doc.addImage(selloImageBase64, 'PNG', positionsX[0], ySignaturesPosition, selloWidth, selloHeight);
+    // Ajusta el texto para que termine en la posición calculada
+    doc.text(
+      `Total a Pagar: ${totalPayable.toFixed(2)} Bs.`,
+      rightAlignedX,
+      yPosition,
+      { align: 'right' }
+    );
+    yPosition += 10; // Espacio después del texto
 
-      // Firma del Agente de Retención
-      doc.line(positionsX[1], yLinePosition, positionsX[1] + signatureLineWidth, yLinePosition);
-      doc.text('Firma Agente de Retención', positionsX[1], yTextPosition);
+    // Sección de firmas y sello digital
+    const signatureLineWidth = 50;
+    const signatureSpacing = (pageWidth - signatureLineWidth * 3) / 4;
+    const positionsX = [
+      signatureSpacing,
+      signatureSpacing * 2 + signatureLineWidth,
+      signatureSpacing * 3 + signatureLineWidth * 2,
+    ];
 
-      // Nombre del responsable (agente de retención)
-      const responsableNombre = formValues.value.nombreResponsable;
-      doc.text(responsableNombre, positionsX[1] + signatureLineWidth / 2 - doc.getTextWidth(responsableNombre) / 2, yLinePosition - 5);
+    const ySignaturesPosition = 170;
+    const yLinePosition = ySignaturesPosition + 20;
+    const yTextPosition = yLinePosition + 5;
 
-      // Firma del Contribuyente
-      doc.line(positionsX[2], yLinePosition, positionsX[2] + signatureLineWidth, yLinePosition);
-      doc.text('Firma del Contribuyente', positionsX[2], yTextPosition);
+    doc.setFontSize(10);
 
-      // Mensaje adicional en letra pequeña
-      const message = 'Este Comprobante se emite según lo establecido en el Artículo Nº 16 de la Providencia Administrativa SNAT/2015/0049 de fecha 14/07/2015 Publicada en Gaceta Oficial Nº 40.720 de fecha 10 Agosto de 2015.';
-      doc.setFontSize(8);
-      doc.text(message, pageMargin, yPosition + 32);
+    // Sello digital
+    const selloImageBase64 = this.imgSelloBase64;
+    const selloWidth = 20;
+    const selloHeight = 20;
+    doc.addImage(
+      selloImageBase64,
+      'PNG',
+      positionsX[0],
+      ySignaturesPosition,
+      selloWidth,
+      selloHeight
+    );
 
-      // Previsualización del PDF antes de descargarlo
-      window.open(doc.output('bloburl'));
+    // Firma del Agente de Retención
+    doc.line(
+      positionsX[1],
+      yLinePosition,
+      positionsX[1] + signatureLineWidth,
+      yLinePosition
+    );
+    doc.text('Firma Agente de Retención', positionsX[1], yTextPosition);
+
+    // Nombre del responsable (agente de retención)
+    const responsableNombre = formValues.value.nombreResponsable;
+    doc.text(
+      responsableNombre,
+      positionsX[1] +
+        signatureLineWidth / 2 -
+        doc.getTextWidth(responsableNombre) / 2,
+      yLinePosition - 5
+    );
+
+    // Firma del Contribuyente
+    doc.line(
+      positionsX[2],
+      yLinePosition,
+      positionsX[2] + signatureLineWidth,
+      yLinePosition
+    );
+    doc.text('Firma del Contribuyente', positionsX[2], yTextPosition);
+
+    // Mensaje adicional en letra pequeña
+    const message =
+      'Este Comprobante se emite según lo establecido en el Artículo Nº 16 de la Providencia Administrativa SNAT/2015/0049 de fecha 14/07/2015 Publicada en Gaceta Oficial Nº 40.720 de fecha 10 Agosto de 2015.';
+    doc.setFontSize(8);
+    doc.text(message, pageMargin, yPosition + 38);
+
+    // Previsualización del PDF antes de descargarlo
+    window.open(doc.output('bloburl'));
   }
 
   createPdfISLR(formValues: any, totalIVA: number) {
@@ -439,5 +556,4 @@ export class PrintService {
     // Generar y abrir el PDF
     doc.output('dataurlnewwindow');
   }
-
 }

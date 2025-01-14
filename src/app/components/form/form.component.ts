@@ -16,7 +16,6 @@ import { SummaryComponent } from '../summary/summary.component';
 import { TaxService } from '../../services/TaxCalculate.service';
 import { PrintService } from '../../services/PrintService.service';
 
-
 interface Factura {
   baseImponible: number;
   porcentaje: number;
@@ -41,8 +40,6 @@ interface RetencionFormData {
   facturas: Factura[];
 }
 
-
-
 @Component({
   selector: 'app-form',
   standalone: true,
@@ -51,11 +48,7 @@ interface RetencionFormData {
   styleUrls: ['./form.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
-
 export class FormComponent implements OnInit {
-
-
   public islrOptions = [
     { label: '1%', value: 0.01 },
     { label: '2%', value: 0.02 },
@@ -82,7 +75,7 @@ export class FormComponent implements OnInit {
   public printService = inject(PrintService);
   public taxCalculationService = inject(TaxService);
   public periodoFiscal = Array.from({ length: 12 }, (_, i) => ({
-    value: `2024-${(i + 1).toString().padStart(2, '0')}`,
+    value: `2025-${(i + 1).toString().padStart(2, '0')}`,
   }));
   public calculateIVA: boolean = true;
 
@@ -92,12 +85,18 @@ export class FormComponent implements OnInit {
 
   private initForm(): void {
     this.retentionForm = this.fb.group({
-      nombreResponsable: ["Orlando Rojas", Validators.required],
-      numeroRetencion: ["58957", [Validators.required, Validators.pattern(/^\d{1,5}$/)]],
-      periodoFiscal: ["", Validators.required],
-      nombreFiscal: ["CECOSESOLA", Validators.required],
-      rif: ["J-085030140", [Validators.required, Validators.pattern(/^([VEJGC]-\d{8,9})$/)]],
-      direccionFiscal: ["EL CUJI LAS VERITAS", Validators.required],
+      nombreResponsable: ['Orlando Rojas', Validators.required],
+      numeroRetencion: [
+        '58957',
+        [Validators.required, Validators.pattern(/^\d{1,5}$/)],
+      ],
+      periodoFiscal: ['', Validators.required],
+      nombreFiscal: ['CECOSESOLA', Validators.required],
+      rif: [
+        'J-085030140',
+        [Validators.required, Validators.pattern(/^([VEJGC]-\d{8,9})$/)],
+      ],
+      direccionFiscal: ['EL CUJI LAS VERITAS', Validators.required],
 
       retencion: ['1', Validators.required],
       facturas: this.fb.array([this.createFacturaGroup()]), // Añadir FormArray para facturas
@@ -105,12 +104,15 @@ export class FormComponent implements OnInit {
   }
   private createFacturaGroup(): FormGroup {
     return this.fb.group({
-      numeroFactura: ["01", Validators.required],      // Control para el número de factura
-      numeroControl: ["0001", Validators.required],      // Control para el número de control
-      baseImponible: [ 1000 , [Validators.required, Validators.min(0)]], // Control para base imponible
-      porcentaje: ["", [Validators.required, Validators.min(0), Validators.max(100)]],  // Control para el porcentaje de retención
-      ivaRate: ["", Validators.required],  // Control para la tasa de IVA
-      fechaFactura: ["", Validators.required]  // Nuevo campo de fecha con validación requerida
+      numeroFactura: ['01', Validators.required], // Control para el número de factura
+      numeroControl: ['0001', Validators.required], // Control para el número de control
+      baseImponible: [1000, [Validators.required, Validators.min(0)]], // Control para base imponible
+      porcentaje: [
+        '',
+        [Validators.required, Validators.min(0), Validators.max(100)],
+      ], // Control para el porcentaje de retención
+      ivaRate: ['', Validators.required], // Control para la tasa de IVA
+      fechaFactura: ['', Validators.required], // Nuevo campo de fecha con validación requerida
     });
   }
 
@@ -157,17 +159,34 @@ export class FormComponent implements OnInit {
       const { baseImponible, porcentaje, ivaRate } = factura;
 
       // Cálculos individuales por factura
-      const facturaIVA = this.taxCalculationService.calculateIVA(baseImponible, ivaRate);
-      const facturaWithheldTax = this.taxCalculationService.calculateWithheldTax(baseImponible, porcentaje, ivaRate);
-      const facturaTotalInvoice = this.taxCalculationService.calculateInvoiceTotal(baseImponible, ivaRate);
-      const facturaTotalPayable = this.taxCalculationService.calculateTotalPayable(baseImponible, porcentaje, ivaRate);
+      const facturaIVA = this.taxCalculationService.calculateIVA(
+        baseImponible,
+        ivaRate
+      );
+      const facturaWithheldTax =
+        this.taxCalculationService.calculateWithheldTax(
+          baseImponible,
+          porcentaje,
+          ivaRate
+        );
+      const facturaTotalInvoice =
+        this.taxCalculationService.calculateInvoiceTotal(
+          baseImponible,
+          ivaRate
+        );
+      const facturaTotalPayable =
+        this.taxCalculationService.calculateTotalPayable(
+          baseImponible,
+          porcentaje,
+          ivaRate
+        );
 
       // Almacenamos los resultados de los cálculos en el objeto de la factura
       factura.calculos = {
         iva: facturaIVA,
         withheldTax: facturaWithheldTax,
         totalInvoice: facturaTotalInvoice,
-        totalPayable: facturaTotalPayable
+        totalPayable: facturaTotalPayable,
       };
 
       // Sumamos los resultados individuales a los totales generales
@@ -183,7 +202,7 @@ export class FormComponent implements OnInit {
         facturaIVA,
         facturaWithheldTax,
         facturaTotalInvoice,
-        facturaTotalPayable
+        facturaTotalPayable,
       });
     });
 
@@ -205,13 +224,11 @@ export class FormComponent implements OnInit {
     });
   }
 
-
-  printRetention(){
-    this.printService.createPdf(this.retentionForm)
+  printRetention() {
+    this.printService.createPdf(this.retentionForm, this.totalPayd);
   }
 
   // Función para manejar el cambio de selección de retención
-
 
   private logFormErrors(): void {
     const formErrors: any = [];
