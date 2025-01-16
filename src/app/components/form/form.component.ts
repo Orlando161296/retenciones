@@ -15,30 +15,7 @@ import {
 import { SummaryComponent } from '../summary/summary.component';
 import { TaxService } from '../../services/TaxCalculate.service';
 import { PrintService } from '../../services/PrintService.service';
-
-interface Factura {
-  baseImponible: number;
-  porcentaje: number;
-  ivaRate: number;
-  // Propiedad opcional para almacenar los cálculos
-  calculos?: {
-    iva: number;
-    withheldTax: number;
-    totalInvoice: number;
-    totalPayable: number;
-  };
-}
-
-interface RetencionFormData {
-  nombreResponsable: string;
-  numeroRetencion: string;
-  periodoFiscal: string;
-  nombreFiscal: string;
-  rif: string;
-  direccionFiscal: string;
-  retencion: string;
-  facturas: Factura[];
-}
+import { RetencionFormData } from '../../interfaces/retencion-form.interface';
 
 @Component({
   selector: 'app-form',
@@ -49,77 +26,127 @@ interface RetencionFormData {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormComponent implements OnInit {
+  /**
+   * Inyección de dependencias para los servicios de FormBuilder, PrintService y TaxService.
+   */
+  public fb = inject(FormBuilder);
+  public printService = inject(PrintService);
+  public taxCalculationService = inject(TaxService);
+
+  /**
+   * Opciones de retención de ISLR.
+   */
   public islrOptions = [
     { label: '1%', value: 0.01 },
     { label: '2%', value: 0.02 },
   ];
 
+  /**
+   * Opciones de tasa de IVA.
+   */
   public ivaOptions = [
     { label: '16%', value: 0.16 },
     { label: '8%', value: 0.08 },
   ];
 
+  /**
+   * Opciones de porcentaje de retención de IVA.
+   */
   public ivaRetention = [
     { label: '100%', value: 1 },
     { label: '75%', value: 0.75 },
   ];
 
+  /**
+   * Formulario principal de retención.
+   */
   retentionForm!: FormGroup;
+
+  /**
+   * Propiedades relacionadas con los cálculos y el estado del formulario.
+   */
   totalIVAWithhealTax: number = 0;
   totalInvoiced: number = 0;
   totalPayd: number = 0;
   showSummary: boolean = false;
   totalIVA: number = 0;
+  showModal: boolean = false;
 
-  public fb = inject(FormBuilder);
-  public printService = inject(PrintService);
-  public taxCalculationService = inject(TaxService);
+  /**
+   * Opciones de períodos fiscales (2025 - meses del año).
+   */
   public periodoFiscal = Array.from({ length: 12 }, (_, i) => ({
     value: `2025-${(i + 1).toString().padStart(2, '0')}`,
   }));
+
+  /**
+   * Bandera para indicar si se debe calcular el IVA.
+   */
   public calculateIVA: boolean = true;
 
+  /**
+   * Inicializa el componente.
+   */
+  constructor() {}
+
+  /**
+   * Hook del ciclo de vida de Angular: se ejecuta al inicializar el componente.
+   */
   ngOnInit(): void {
     this.initForm();
   }
 
+  /**
+   * Inicializa el formulario de retención.
+   */
   private initForm(): void {
     this.retentionForm = this.fb.group({
-      nombreResponsable: ['Orlando Rojas', Validators.required],
+      nombreResponsable: ['', Validators.required],
       numeroRetencion: [
-        '58957',
+        '',
         [Validators.required, Validators.pattern(/^\d{1,5}$/)],
       ],
       periodoFiscal: ['', Validators.required],
-      nombreFiscal: ['CECOSESOLA', Validators.required],
+      nombreFiscal: ['', Validators.required],
       rif: [
-        'J-085030140',
+        '',
         [Validators.required, Validators.pattern(/^([VEJGC]-\d{8,9})$/)],
       ],
-      direccionFiscal: ['EL CUJI LAS VERITAS', Validators.required],
-
-      retencion: ['1', Validators.required],
-      facturas: this.fb.array([this.createFacturaGroup()]), // Añadir FormArray para facturas
+      direccionFiscal: ['', Validators.required],
+      retencion: ['', Validators.required],
+      facturas: this.fb.array([this.createFacturaGroup()]), // FormArray para las facturas
     });
   }
+
+  /**
+   * Crea un grupo de formulario para una factura.
+   * @returns FormGroup - Grupo de controles para una factura.
+   */
   private createFacturaGroup(): FormGroup {
     return this.fb.group({
-      numeroFactura: ['01', Validators.required], // Control para el número de factura
-      numeroControl: ['0001', Validators.required], // Control para el número de control
-      baseImponible: [1000, [Validators.required, Validators.min(0)]], // Control para base imponible
+      numeroFactura: ['', Validators.required],
+      numeroControl: ['', Validators.required],
+      baseImponible: [, [Validators.required, Validators.min(0)]],
       porcentaje: [
         '',
         [Validators.required, Validators.min(0), Validators.max(100)],
-      ], // Control para el porcentaje de retención
-      ivaRate: ['', Validators.required], // Control para la tasa de IVA
-      fechaFactura: ['', Validators.required], // Nuevo campo de fecha con validación requerida
+      ],
+      ivaRate: ['', Validators.required],
+      fechaFactura: ['', Validators.required],
     });
   }
 
+  /**
+   * Getter para obtener el FormArray de facturas.
+   */
   get facturas(): FormArray {
     return this.retentionForm.get('facturas') as FormArray;
   }
 
+  /**
+   * Agrega una nueva factura al FormArray.
+   * Limita la cantidad máxima a 4 facturas.
+   */
   addFactura(): void {
     if (this.facturas.length <= 4) {
       this.facturas.push(this.createFacturaGroup());
@@ -128,37 +155,45 @@ export class FormComponent implements OnInit {
     }
   }
 
+  /**
+   * Elimina una factura del FormArray según el índice proporcionado.
+   * @param index - Índice de la factura a eliminar.
+   */
   removeFactura(index: number): void {
     if (this.facturas.length > 1) {
       this.facturas.removeAt(index);
     }
   }
 
+  /**
+   * Maneja el envío del formulario.
+   * Valida el formulario y calcula los totales si es válido.
+   */
   onSubmit(): void {
     if (this.retentionForm.valid) {
       const formData: RetencionFormData = this.retentionForm.value;
 
-      // Llamar a los servicios para calcular los valores
+      console.log(this.retentionForm.value);
       this.calculateTotals(formData);
 
-      // Mostrar los resultados si todo está correcto
-      this.showSummary = true;
+      this.showModal = true; // Muestra el modal al enviar el formulario
     } else {
       this.logFormErrors();
     }
   }
 
+  /**
+   * Calcula los totales generales de IVA, impuestos retenidos y montos totales.
+   * @param formData - Datos del formulario.
+   */
   private calculateTotals(formData: RetencionFormData): void {
     let totalIVA = 0;
     let totalWithheldTax = 0;
     let totalInvoice = 0;
     let totalPayable = 0;
 
-    // Recorremos cada factura y realizamos los cálculos
     formData.facturas.forEach((factura, index) => {
       const { baseImponible, porcentaje, ivaRate } = factura;
-
-      // Cálculos individuales por factura
       const facturaIVA = this.taxCalculationService.calculateIVA(
         baseImponible,
         ivaRate
@@ -181,7 +216,6 @@ export class FormComponent implements OnInit {
           ivaRate
         );
 
-      // Almacenamos los resultados de los cálculos en el objeto de la factura
       factura.calculos = {
         iva: facturaIVA,
         withheldTax: facturaWithheldTax,
@@ -189,47 +223,28 @@ export class FormComponent implements OnInit {
         totalPayable: facturaTotalPayable,
       };
 
-      // Sumamos los resultados individuales a los totales generales
       totalIVA += facturaIVA;
       totalWithheldTax += facturaWithheldTax;
       totalInvoice += facturaTotalInvoice;
       totalPayable += facturaTotalPayable;
-
-      // Opción: Imprimir en consola los cálculos individuales de cada factura
-      console.log(`Factura ${index + 1}:`, {
-        baseImponible,
-        ivaRate,
-        facturaIVA,
-        facturaWithheldTax,
-        facturaTotalInvoice,
-        facturaTotalPayable,
-      });
     });
 
-    // Asignar los valores calculados a las propiedades del componente
     this.totalIVA = totalIVA;
     this.totalIVAWithhealTax = totalWithheldTax;
     this.totalInvoiced = totalInvoice;
     this.totalPayd = totalPayable;
-
-    // Imprimir los datos completos del formulario en la consola
-    console.log('Datos del formulario:', formData);
-
-    // Mostrar los totales calculados en la consola
-    console.log('Totales Calculados:', {
-      totalIVA,
-      totalWithheldTax,
-      totalInvoice,
-      totalPayable,
-    });
   }
 
-  printRetention() {
+  /**
+   * Genera un PDF con los datos del formulario.
+   */
+  printRetention(): void {
     this.printService.createPdf(this.retentionForm, this.totalPayd);
   }
 
-  // Función para manejar el cambio de selección de retención
-
+  /**
+   * Registra los errores de validación del formulario en la consola.
+   */
   private logFormErrors(): void {
     const formErrors: any = [];
     Object.keys(this.retentionForm.controls).forEach((key) => {
@@ -240,5 +255,12 @@ export class FormComponent implements OnInit {
     });
 
     console.error('Errores en el formulario:', formErrors);
+  }
+
+  /**
+   * Cierra el modal de resumen y oculta su estado.
+   */
+  closeModal(): void {
+    this.showModal = false;
   }
 }
